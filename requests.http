@@ -1,0 +1,18 @@
+### 잘못된 게시글 생성 테스트
+POST http://localhost:8080/api/posts
+Content-Type: application/json
+
+{
+  "title": "",
+  "content": "",
+  "writerId": null
+}
+
+### 잘못된 게시글 수정 테스트
+PUT http://localhost:8080/api/posts/1
+Content-Type: application/json
+
+{
+  "title": "   ",
+  "content": ""
+}
