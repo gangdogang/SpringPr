@@ -2,12 +2,16 @@ package com.study.board.Service;
 
 
 import com.study.board.DTO.CommentRequestDto;
+import com.study.board.DTO.CommentResponseDto;
 import com.study.board.Domain.Comment;
 import com.study.board.Domain.Post;
 import com.study.board.Domain.User;
 import com.study.board.Exception.NotFoundException;
+import com.study.board.Repository.CommentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class CommentService {
@@ -37,6 +41,7 @@ public class CommentService {
         Comment comment = Comment.builder()
                 .content(request.getContent())
                 .writer(writer)
+                .post(post)
                 .build();
 
         //새 댓글을 DB에 저장
@@ -46,5 +51,19 @@ public class CommentService {
         return savedComment.getId();
     }
 
+
+    @Transactional
+    public List<CommentResponseDto> getComments(Long postId){
+         List<Comment> comments = commentRepository.findAllByPostId(postId);
+
+         return comments.stream().map(comment -> new CommentResponseDto(
+                 comment.getId(),
+                 comment.getContent(),
+                 comment.getWriter().getNickname()
+         ))
+                 .toList();
+
+
+    }
 
 }
