@@ -73,10 +73,11 @@ public class PostService {
 
     @Transactional
     public void increaseViewCount(Long postId){
-        Post post = postRepository.findById(postId)
-                .orElseThrow(()-> new NotFoundException("존재하지 않는 게시글 입니다."));
+        int updatedCount = postRepository.increaseViewCount(postId);
 
-        post.increaseViewCount();
+        if(updatedCount==0){
+            throw new NotFoundException("존재하지 않는 게시글입니다.");
+        }
     }
 
     @Transactional
@@ -90,4 +91,5 @@ public class PostService {
         );
 
     }
+
 }
