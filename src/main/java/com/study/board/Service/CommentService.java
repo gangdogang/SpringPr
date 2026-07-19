@@ -66,4 +66,13 @@ public class CommentService {
 
     }
 
+    @Transactional
+    public void updateComment(Long commentId, CommentRequestDto request){
+        Comment comment = commentRepository.findById((commentId))
+                .orElseThrow(() -> new NotFoundException("댓글이 존재하지 않습니다"));
+
+        //직접 업데이트 하는 코드
+        comment.commentUpdate(request.getContent());
+    }
+
 }
